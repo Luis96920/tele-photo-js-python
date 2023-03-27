@@ -1,4 +1,4 @@
-import os
+import os, io
 import boto3
 from flask import Flask, request, jsonify
 import uuid
@@ -7,6 +7,7 @@ from image_processing import predict_step
 from flask_cors import CORS
 from image_gen import get_new_image
 import base64
+from PIL import Image
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes and origins by default
@@ -53,18 +54,20 @@ def upload_and_process():
         return jsonify(status="error", message="No image file provided."), 400
 
     image = request.files["image"]
+    file_content = image.read()
 
-    with open("imageToSave.png", "wb") as fh:
-        fh.write(base64.b64decode(image.read()))
+    im_buffer = io.BytesIO(file_content)
+    image_pil = Image.open(im_buffer)
+    im_buffer.seek(0)
 
     base_name = str(uuid.uuid1())
     filename = base_name + ".jpg"
 
     # Upload the original image
-    original_url = upload_file_to_s3(image, ORIGINAL_FOLDER, filename)
+    original_url = upload_file_to_s3(im_buffer, ORIGINAL_FOLDER, filename)
 
     # Process the image
-    prompt = predict_step(["imageToSave.png"])
+    prompt = predict_step(image_pil)
     processed_image = get_new_image(prompt) # process_image(image)  # Implement this function in the image_processing.py file
 
     # Upload the processed image
