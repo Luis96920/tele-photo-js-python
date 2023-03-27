@@ -63,7 +63,10 @@ def upload_and_process():
     processed_filename = f"{os.path.splitext(filename)[0]}-processed{os.path.splitext(filename)[1]}"
     processed_url = upload_file_to_s3(processed_image, PROCESSED_FOLDER, processed_filename)
 
-    return jsonify(status="success", original_url=original_url, processed_url=processed_url)
+    resp = jsonify(status="success", original_url=original_url, processed_url=processed_url)
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+
+    return resp
 
 
 if __name__ == "__main__":
