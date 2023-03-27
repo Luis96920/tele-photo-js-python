@@ -57,7 +57,7 @@ def upload_and_process():
     original_url = upload_file_to_s3(image, ORIGINAL_FOLDER, filename)
 
     # Process the image
-    processed_image = process_image(image)  # Implement this function in the image_processing.py file
+    processed_image = image # process_image(image)  # Implement this function in the image_processing.py file
 
     # Upload the processed image
     processed_filename = f"{os.path.splitext(filename)[0]}-processed{os.path.splitext(filename)[1]}"
