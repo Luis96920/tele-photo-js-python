@@ -68,7 +68,7 @@ def upload_and_process():
     original_url = upload_file_to_s3(im_buffer, ORIGINAL_FOLDER, filename)
 
     # Process the image
-    prompt = predict_step(image_pil)
+    prompt = predict_step(image_pil)[0]
     processed_image = get_new_image(prompt) # process_image(image)  # Implement this function in the image_processing.py file
 
     # Upload the processed image
