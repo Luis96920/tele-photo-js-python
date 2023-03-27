@@ -4,8 +4,10 @@ from flask import Flask, request, jsonify
 import uuid
 import json
 from image_processing import process_image
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes and origins by default
 
 def get_keys():
     with open("config.json", 'r') as fp:

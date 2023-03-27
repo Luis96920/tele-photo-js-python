@@ -10,7 +10,7 @@ $(document).ready(function () {
         const formData = new FormData();
         formData.append("image", imageInput[0].files[0]);
 
-        axios.post("/upload_and_process", formData, {
+        axios.post("http://3.21.37.177/upload_and_process", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
