@@ -5,6 +5,7 @@ import uuid
 import json
 from image_processing import process_image
 from flask_cors import CORS
+from image_gen import get_new_image
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes and origins by default
@@ -51,17 +52,18 @@ def upload_and_process():
         return jsonify(status="error", message="No image file provided."), 400
 
     image = request.files["image"]
-    filename = str(uuid.uuid1()) + ".jpg"
+    base_name = str(uuid.uuid1())
+    filename = base_name + ".jpg"
 
     # Upload the original image
     original_url = upload_file_to_s3(image, ORIGINAL_FOLDER, filename)
 
     # Process the image
-    processed_image = request.files["image"] # process_image(image)  # Implement this function in the image_processing.py file
+    processed_image = get_new_image("jake from state farm in the yard at night") # process_image(image)  # Implement this function in the image_processing.py file
 
     # Upload the processed image
-    processed_filename = f"{os.path.splitext(filename)[0]}-processed{os.path.splitext(filename)[1]}"
-    processed_url = original_url #upload_file_to_s3(processed_image, PROCESSED_FOLDER, processed_filename)
+    processed_filename = "{}-processed.jpg".format(base_name)
+    processed_url = upload_file_to_s3(processed_image, PROCESSED_FOLDER, processed_filename)
 
     response = jsonify(status="success", original_url=original_url, processed_url=processed_url)
         
