@@ -38,7 +38,7 @@ def upload_file_to_s3(file, folder, filename):
     file_url = s3.generate_presigned_url(
         ClientMethod="get_object",
         Params={"Bucket": S3_BUCKET_NAME, "Key": folder + filename},
-        ExpiresIn=datetime.timedelta(hours=1).total_seconds(),
+        ExpiresIn=int(datetime.timedelta(hours=1).total_seconds())
     )
 
     return file_url
