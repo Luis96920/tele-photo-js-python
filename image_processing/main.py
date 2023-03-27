@@ -45,7 +45,7 @@ def upload_file_to_s3(file, folder, filename):
 
 
 
-@app.route("/upload_and_process", methods=["POST"])
+@app.route("/api/upload_and_process", methods=["POST"])
 def upload_and_process():
     if "image" not in request.files:
         return jsonify(status="error", message="No image file provided."), 400
