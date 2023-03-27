@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <!-- Inside the <body> tag -->
+    <div class="container">
+        <form id="upload-form">
+            <input type="file" id="image-input" accept="image/*" required>
+            <button type="submit">Upload Image</button>
+        </form>
+        <div class="images">
+            <img id="original-image" src="" alt="Original Image" style="display: none;">
+            <img id="processed-image" src="" alt="Processed Image" style="display: none;">
+        </div>
+        <button id="process-image" style="display: none;">Process Image</button>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
+
+
+    
