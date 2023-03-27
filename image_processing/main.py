@@ -2,20 +2,27 @@ import os
 import boto3
 from flask import Flask, request, jsonify
 import uuid
+import json
 from image_processing import process_image
 
 app = Flask(__name__)
 
+def get_keys():
+    with open("config.json", 'r') as fp:
+        d = json.load(fp)
+        return d
+
 # Configure the S3 client
+key_dict = get_keys()
 s3 = boto3.client(
     "s3",
-    aws_access_key_id="YOUR_AWS_ACCESS_KEY",
-    aws_secret_access_key="YOUR_AWS_SECRET_KEY",
-    region_name="YOUR_AWS_REGION",
+    aws_access_key_id=key_dict["aws-access-key"],
+    aws_secret_access_key=key_dict["aws-secret-key"],
+    region_name="us-east-2",
 )
 
 # Set up the S3 bucket and folder names
-S3_BUCKET_NAME = "your-s3-bucket"
+S3_BUCKET_NAME = "tele-photo"
 ORIGINAL_FOLDER = "original-images/"
 PROCESSED_FOLDER = "processed-images/"
 

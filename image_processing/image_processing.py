@@ -3,6 +3,7 @@ from PIL import Image
 # Import your PyTorch model and any required libraries here
 
 def process_image(image):
+
     # Load your PyTorch model here
     
     # Convert the uploaded image into a format suitable for your model (e.g., NumPy array, PyTorch tensor)
