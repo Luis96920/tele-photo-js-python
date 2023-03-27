@@ -63,11 +63,20 @@ def upload_and_process():
     processed_filename = f"{os.path.splitext(filename)[0]}-processed{os.path.splitext(filename)[1]}"
     processed_url = upload_file_to_s3(processed_image, PROCESSED_FOLDER, processed_filename)
 
-    resp = jsonify(status="success", original_url=original_url, processed_url=processed_url)
-    resp.headers.add('Access-Control-Allow-Origin', '*')
+    response = jsonify(status="success", original_url=original_url, processed_url=processed_url)
+        
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
 
-    return resp
+    return response
 
+# @app.after_request
+# def after_request(response):
+#   response.headers.add('Access-Control-Allow-Origin', '*')
+#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+#   return response
 
 if __name__ == "__main__":
     app.run(debug=True)
