@@ -10,7 +10,7 @@ $(document).ready(function () {
         const formData = new FormData();
         formData.append("image", imageInput[0].files[0]);
 
-        axios.post("http://3.21.37.177/api/upload_and_process", formData, {
+        axios.post("http://telephoto.reiform.com/api/upload_and_process", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
