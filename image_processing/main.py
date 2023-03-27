@@ -61,7 +61,7 @@ def upload_and_process():
 
     # Upload the processed image
     processed_filename = f"{os.path.splitext(filename)[0]}-processed{os.path.splitext(filename)[1]}"
-    processed_url = upload_file_to_s3(processed_image, PROCESSED_FOLDER, processed_filename)
+    processed_url = original_url #upload_file_to_s3(processed_image, PROCESSED_FOLDER, processed_filename)
 
     response = jsonify(status="success", original_url=original_url, processed_url=processed_url)
         
