@@ -1,7 +1,7 @@
 import os
 import boto3
 from flask import Flask, request, jsonify
-from werkzeug.utils import secure_filename
+import uuid
 from image_processing import process_image
 
 app = Flask(__name__)
@@ -42,7 +42,7 @@ def upload_and_process():
         return jsonify(status="error", message="No image file provided."), 400
 
     image = request.files["image"]
-    filename = secure_filename(image.filename)
+    filename = uuid.uuid1()
 
     # Upload the original image
     original_url = upload_file_to_s3(image, ORIGINAL_FOLDER, filename)
