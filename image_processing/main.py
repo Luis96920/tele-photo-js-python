@@ -57,8 +57,9 @@ def upload_and_process():
     file_content = image.read()
 
     im_buffer = io.BytesIO(file_content)
-    image_pil = Image.open(im_buffer)
+    im_buffer_dup = io.BytesIO(im_buffer.read())
     im_buffer.seek(0)
+    image_pil = Image.open(im_buffer_dup)
 
     base_name = str(uuid.uuid1())
     filename = base_name + ".jpg"
