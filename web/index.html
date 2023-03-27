@@ -7,6 +7,41 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
+    <style>
+        /* Add this CSS rule for the loading icon container */
+        #loading-icon {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 100;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      
+        .loader {
+          border: 8px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 8px solid #3498db;
+          width: 60px;
+          height: 60px;
+          animation: spin 2s linear infinite;
+        }
+      
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+      
+
 </head>
 <body>
     <!-- Inside the <body> tag -->
@@ -23,9 +58,9 @@
         </div>
         <button id="process-image" style="display: none;">Process Image</button>
     </div>
+    <div id="loading-icon" style="display:none;">
+        <div class="loader"></div>
+      </div>
     <script src="scripts.js"></script>
 </body>
 </html>
-
-
-    

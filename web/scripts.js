@@ -5,7 +5,21 @@ $(document).ready(function () {
     const originalImage = $("#original-image");
     const processedImage = $("#processed-image");
 
+    // Find the loading-icon element
+    const loadingIcon = document.getElementById("loading-icon");
+
+    // Function to show the loading icon
+    function showLoadingIcon() {
+    loadingIcon.style.display = "block";
+    }
+
+    // Function to hide the loading icon
+    function hideLoadingIcon() {
+    loadingIcon.style.display = "none";
+    }
+
     uploadForm.on("submit", function (event) {
+        showLoadingIcon();
         event.preventDefault();
         const formData = new FormData();
         formData.append("image", imageInput[0].files[0]);
@@ -20,9 +34,11 @@ $(document).ready(function () {
             originalImage.show();
             processedImage.attr("src", response.data.processed_url);
             processedImage.show();
+            hideLoadingIcon()
         })
         .catch(error => {
             console.error(error);
+            hideLoadingIcon()
         });
     });
 });
