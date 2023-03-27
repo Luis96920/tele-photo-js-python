@@ -51,7 +51,7 @@ def upload_and_process():
         return jsonify(status="error", message="No image file provided."), 400
 
     image = request.files["image"]
-    filename = uuid.uuid1()
+    filename = str(uuid.uuid1()) + ".jpg"
 
     # Upload the original image
     original_url = upload_file_to_s3(image, ORIGINAL_FOLDER, filename)
