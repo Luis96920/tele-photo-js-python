@@ -54,9 +54,8 @@ def upload_and_process():
 
     image = request.files["image"]
 
-    print(type(image))
     with open("imageToSave.png", "wb") as fh:
-        fh.write(base64.b64decode(image))
+        fh.write(base64.b64decode(image.read()))
 
     base_name = str(uuid.uuid1())
     filename = base_name + ".jpg"
