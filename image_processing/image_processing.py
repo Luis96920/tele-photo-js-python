@@ -1,21 +1,38 @@
-import io
+from transformers import VisionEncoderDecoderModel, ViTImageProcessor, AutoTokenizer
+import torch
 from PIL import Image
-# Import your PyTorch model and any required libraries here
 
-def process_image(image):
+model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+feature_extractor = ViTImageProcessor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
 
-    # Load your PyTorch model here
-    
-    # Convert the uploaded image into a format suitable for your model (e.g., NumPy array, PyTorch tensor)
-    
-    # Run the model on the image
-    
-    # Process the model's output to generate the final image (e.g., convert back to PIL Image format)
-    processed_image = Image.open(image)  # Replace this with the actual processed image
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
 
-    # Save the processed image to a BytesIO object to upload to S3
-    processed_image_bytes = io.BytesIO()
-    processed_image.save(processed_image_bytes, format="JPEG")
-    processed_image_bytes.seek(0)
 
-    return processed_image_bytes
+
+max_length = 16
+num_beams = 4
+gen_kwargs = {"max_length": max_length, "num_beams": num_beams}
+def predict_step(image_paths):
+  images = []
+  for image_path in image_paths:
+    i_image = Image.open(image_path)
+    if i_image.mode != "RGB":
+      i_image = i_image.convert(mode="RGB")
+
+    images.append(i_image)
+
+  pixel_values = feature_extractor(images=images, return_tensors="pt").pixel_values
+  pixel_values = pixel_values.to(device)
+
+  output_ids = model.generate(pixel_values, **gen_kwargs)
+
+  preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
+  preds = [pred.strip() for pred in preds]
+  return preds
+
+if __name__ == "__main__":
+    print(predict_step(['imageToSave.png'])) 
+
+
