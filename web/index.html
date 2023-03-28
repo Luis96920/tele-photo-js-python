@@ -49,6 +49,10 @@
         <div id="top-section">
         <h1> Welcome to TelePhoto </h1>
         <h3> An image-based game of Telephone starting with YOU and passing through two generative AI models. </h3>
+        <h3> The first AI model generates a caption for your image. 
+            <br> The second AI model generates an image for that caption. <br>
+            How far will this game of TelePhoto take your image?
+         </h3>
         <p>
             Files uploaded to this website are stored for a maximum of 1 day and are automatically deleted after that time. <br> 
             If you require immediate deletion of any files please contact: ben at reiform.com.
@@ -64,6 +68,7 @@
             <input type="file" id="image-input" accept="image/*" required>
             <button id="uploadBtn" type="submit">Play Telephoto!</button>
         </form>
+        <div id="text-above-images"></div>
         <div class="images">
             <img id="original-image" src="" alt="Original Image" style="display: none;">
             <img id="processed-image" src="" alt="Processed Image" style="display: none;">

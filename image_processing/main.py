@@ -86,7 +86,7 @@ def upload_and_process():
     with open(processed_image, 'rb') as proc_im:
         processed_url = upload_file_to_s3(proc_im, PROCESSED_FOLDER, processed_filename)
 
-    response = jsonify(status="success", original_url=original_url, processed_url=processed_url)
+    response = jsonify(status="success", original_url=original_url, processed_url=processed_url, text=prompt)
         
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')

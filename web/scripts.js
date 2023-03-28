@@ -4,6 +4,7 @@ $(document).ready(function () {
     const imageInput = $("#image-input");
     const originalImage = $("#original-image");
     const processedImage = $("#processed-image");
+    const textAboveImages = $("#text-above-images")
 
     const termsCheckbox = $('#terms');
     const uploadBtn = $('#uploadBtn');
@@ -53,7 +54,9 @@ $(document).ready(function () {
             originalImage.show();
             processedImage.attr("src", response.data.processed_url);
             processedImage.show();
-            hideLoadingIcon()
+            textAboveImages.text(response.data.text);
+            textAboveImages.show();
+            hideLoadingIcon();
         })
         .catch(error => {
             console.error(error);
