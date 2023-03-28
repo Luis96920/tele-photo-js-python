@@ -10,10 +10,18 @@ $(document).ready(function () {
 
     // Initially disable the button
     uploadBtn.prop('disabled', true);
+    uploadBtn.addClass('disabled-btn');
 
     termsCheckbox.on('change', function () {
-        // Enable or disable the button based on the checkbox state
-        uploadBtn.prop('disabled', !termsCheckbox.prop('checked'));
+      // Enable or disable the button based on the checkbox state
+      uploadBtn.prop('disabled', !termsCheckbox.prop('checked'));
+  
+      // Add or remove the disabled-btn class based on the checkbox state
+      if (termsCheckbox.prop('checked')) {
+        uploadBtn.removeClass('disabled-btn');
+      } else {
+        uploadBtn.addClass('disabled-btn');
+      }
     });
 
     // Find the loading-icon element
@@ -35,7 +43,7 @@ $(document).ready(function () {
         const formData = new FormData();
         formData.append("image", imageInput[0].files[0]);
 
-        axios.post("http://telephoto.reiform.com/api/upload_and_process", formData, {
+        axios.post("https://telephoto.reiform.com/api/upload_and_process", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },

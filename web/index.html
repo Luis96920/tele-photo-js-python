@@ -46,21 +46,23 @@
 </head>
 <body>
     <!-- Inside the <body> tag -->
+        <div id="top-section">
         <h1> Welcome to TelePhoto </h1>
         <h3> A game of Telephone starting with YOU and passing through two generative AI models. </h3>
         <p>
             Files uploaded to this website are stored for a maximum of 1 day and are automatically deleted after that time. <br> 
             If you require immediate deletion of any files please contact: ben at reiform.com.
           </p>
+        </div>
           <label for="terms">
             <input type="checkbox" id="terms" name="terms" required>
-            I agree to the one day file hold policy.
+            I agree to the one day file hold policy. (You must agree to ride the ride)
           </label>
           
     <div class="container">
         <form id="upload-form">
             <input type="file" id="image-input" accept="image/*" required>
-            <button type="submit">Play Telephoto!</button>
+            <button id="uploadBtn" type="submit">Play Telephoto!</button>
         </form>
         <div class="images">
             <img id="original-image" src="" alt="Original Image" style="display: none;">

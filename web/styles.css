@@ -3,6 +3,10 @@ body {
     font-family: Arial, sans-serif;
 }
 
+head, body {
+    background-color: #f2ebf7f6;
+}
+
 .container {
     width: 100%;
     max-width: 1200px;
@@ -37,3 +41,8 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.disabled-btn {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
