@@ -5,6 +5,17 @@ $(document).ready(function () {
     const originalImage = $("#original-image");
     const processedImage = $("#processed-image");
 
+    const termsCheckbox = $('#terms');
+    const uploadBtn = $('#uploadBtn');
+
+    // Initially disable the button
+    uploadBtn.prop('disabled', true);
+
+    termsCheckbox.on('change', function () {
+        // Enable or disable the button based on the checkbox state
+        uploadBtn.prop('disabled', !termsCheckbox.prop('checked'));
+    });
+
     // Find the loading-icon element
     const loadingIcon = document.getElementById("loading-icon");
 
