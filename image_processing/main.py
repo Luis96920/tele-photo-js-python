@@ -8,6 +8,7 @@ from flask_cors import CORS
 from image_gen import get_new_image
 import base64
 from PIL import Image
+import magic
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes and origins by default
@@ -47,6 +48,11 @@ def upload_file_to_s3(file, folder, filename):
     return file_url
 
 
+def is_valid_image(file):
+    mime = magic.from_buffer(file.stream.read(), mime=True)
+    file.stream.seek(0)  # Reset the file stream position
+    return mime.startswith('image/')
+
 
 @app.route("/api/upload_and_process", methods=["POST"])
 def upload_and_process():
@@ -54,6 +60,10 @@ def upload_and_process():
         return jsonify(status="error", message="No image file provided."), 400
 
     image = request.files["image"]
+
+    if not is_valid_image(image):
+        return jsonify(status="error", message="No image file provided."), 400
+
     file_content = image.read()
 
     im_buffer = io.BytesIO(file_content)
