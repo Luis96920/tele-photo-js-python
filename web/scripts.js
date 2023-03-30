@@ -2,9 +2,7 @@
 $(document).ready(function () {
     const uploadForm = $("#upload-form");
     const imageInput = $("#image-input");
-    const originalImage = $("#original-image");
-    const processedImage = $("#processed-image");
-    const textAboveImages = $("#text-above-images")
+    const countdownTimer = $('#countdown-timer');
 
     const termsCheckbox = $('#terms');
     const uploadBtn = $('#uploadBtn');
@@ -38,13 +36,39 @@ $(document).ready(function () {
     loadingIcon.style.display = "none";
     }
 
+    function updateCountdown(secondsLeft) {
+        countdownTimer.text(`${secondsLeft} sec`);
+      }
+
+    function startTimer(secondsLeft) {
+        
+        let intervalId = setInterval(function () {
+    
+            secondsLeft -= 1;
+
+            if (secondsLeft <= 0) {
+                secondsLeft = 0;
+            }
+            
+            updateCountdown(secondsLeft);
+        }, 1000);
+        return intervalId;
+    }
+      
+    function stopTimer(timerInterval) {
+    clearInterval(timerInterval);
+    }
+    
+
     uploadForm.on("submit", function (event) {
         showLoadingIcon();
+        const numberDropdown = document.getElementById("number-dropdown");
+        const numberValue = numberDropdown.value;
+        updateCountdown(12*numberValue);
+        timer = startTimer(12 * parseInt(numberValue));
         event.preventDefault();
         const formData = new FormData();
         formData.append("image", imageInput[0].files[0]);
-        const numberDropdown = document.getElementById("number-dropdown");
-        const numberValue = numberDropdown.value;
         formData.append("number", numberValue);
 
         axios.post("https://telephoto.reiform.com/api/upload_and_process", formData, {
@@ -70,10 +94,12 @@ $(document).ready(function () {
                 $('#image-pairs').append(row);
             }
             hideLoadingIcon();
+            stopTimer(timer);
         })
         .catch(error => {
             console.error(error);
-            hideLoadingIcon()
+            hideLoadingIcon();
+            stopTimer(timer);
         });
     });
 });

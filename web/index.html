@@ -31,6 +31,12 @@
           height: 60px;
           animation: spin 2s linear infinite;
         }
+
+        #countdown-timer {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        background-color: #f2ebf7f6;
+        }
       
         @keyframes spin {
           0% {
@@ -86,6 +92,7 @@
         <button id="process-image" style="display: none;">Process Image</button>
     </div>
     <div id="loading-icon" style="display:none;">
+        <div id="countdown-timer"></div>
         <div class="loader"></div>
       </div>
     <script src="scripts.js"></script>
