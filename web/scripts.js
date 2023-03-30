@@ -64,7 +64,7 @@ $(document).ready(function () {
         showLoadingIcon();
         const numberDropdown = document.getElementById("number-dropdown");
         const numberValue = numberDropdown.value;
-        updateCountdown(12*numberValue);
+        updateCountdown(12*parseInt(numberValue));
         timer = startTimer(12 * parseInt(numberValue));
         event.preventDefault();
         const formData = new FormData();
@@ -77,22 +77,54 @@ $(document).ready(function () {
             },
         })
         .then(response => {
-            const imagePairs = response.data.data;
+            const imagePair = response.data;
             
             // Clear the div
             $('#image-pairs').empty();
 
-            for (let i = 0; i < imagePairs.length; i++) {
-                const imagePair = imagePairs[i];
-                const row = $('<div class="image-row"></div>');
-                const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
-                const imagePairDiv = $('<div class="image-pair"></div>');
-                const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
-                const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
-                imagePairDiv.append(originalImage).append(processedImage);
-                row.append(caption).append(imagePairDiv);
-                $('#image-pairs').append(row);
+            const row = $('<div class="image-row"></div>');
+            const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
+            const imagePairDiv = $('<div class="image-pair"></div>');
+            const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
+            const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
+            imagePairDiv.append(originalImage).append(processedImage);
+            row.append(caption).append(imagePairDiv);
+            $('#image-pairs').append(row);
+
+            let original_url = imagePair.original_url;
+            for (let i = 1; i < parseInt(numberValue); i++) {
+                let data = {
+                    "url" : original_url
+                }
+                axios.post("https://telephoto.reiform.com/api/url_and_process", data, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then(response => {
+                    const imagePairs = response.data;
+                    
+                    // Clear the div
+    
+                    const imagePair = imagePairs[i];
+                    const row = $('<div class="image-row"></div>');
+                    const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
+                    const imagePairDiv = $('<div class="image-pair"></div>');
+                    const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
+                    const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
+                    imagePairDiv.append(originalImage).append(processedImage);
+                    row.append(caption).append(imagePairDiv);
+                    $('#image-pairs').append(row);
+                    
+                    original_url = imagePair.original_url;
+                })
+                .catch(error => {
+                    console.error(error);
+                    hideLoadingIcon();
+                    stopTimer(timer);
+                });
             }
+    
             hideLoadingIcon();
             stopTimer(timer);
         })
@@ -101,5 +133,7 @@ $(document).ready(function () {
             hideLoadingIcon();
             stopTimer(timer);
         });
+
+        
     });
 });

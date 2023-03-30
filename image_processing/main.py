@@ -7,6 +7,7 @@ from image_processing import predict_step
 from flask_cors import CORS
 from image_gen import get_new_image
 import base64
+import requests
 from PIL import Image
 import magic
 
@@ -42,7 +43,7 @@ def upload_file_to_s3(file, folder, filename):
     file_url = s3.generate_presigned_url(
         ClientMethod="get_object",
         Params={"Bucket": S3_BUCKET_NAME, "Key": folder + filename},
-        ExpiresIn=int(datetime.timedelta(hours=1).total_seconds())
+        ExpiresIn=int(datetime.timedelta(minutes=10).total_seconds())
     )
 
     return file_url
@@ -61,28 +62,66 @@ def upload_and_process():
 
     image = request.files["image"]
 
-    try:
-        rounds = int(request.form['number'])
-        rounds = min(rounds, 5)
-    except ValueError:
-        return jsonify({'error': 'Invalid input: not an integer'}), 400
-
     if not is_valid_image(image):
         return jsonify(status="error", message="No image file provided."), 400
 
     file_content = image.read()
     im_buffer = io.BytesIO(file_content)
 
-    resp_list = []
-    for i in range(rounds):
-        original_url, prompt, processed_url, im_buffer = generate_next_image(im_buffer)
-        resp_list.append({
-            'original_url': original_url,
-            'processed_url': processed_url,
-            'caption': prompt
-        })
+    original_url, prompt, processed_url, im_buffer = generate_next_image(im_buffer)
+    
+    response = jsonify(status="success", original_url=original_url, processed_url=processed_url, caption=prompt)
+        
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Cache-Control', 'no-cache, no-store, must-revalidate')
 
-    response = jsonify(status="success", data=resp_list)
+    return response
+
+def check_url(url):
+    try:
+        start_str = "https://tele-photo.s3.amazonaws.com/processed-images/"
+        if url[0:len(start_str)] != start_str:
+            return False
+        
+        filename_str = start_str + "bf7da412-cec6-11ed-b80b-060f2440ce9d"
+        proc_str = "-processed.jpg?"
+        if url[len(filename_str): len(filename_str) + len(proc_str)] != proc_str:
+            return False
+        
+        if "." in url[len(filename_str) + len(proc_str):]:
+            return False
+
+        remainder = url[len(filename_str) + len(proc_str):]
+        if "X-Amz-Algorithm" in remainder and "X-Amz-Credential" in remainder and "X-Amz-SignedHeaders" in remainder:
+            return True
+        
+        return False
+    except:
+        return False
+
+@app.route("/api/url_and_process", methods=["POST"])
+def url_and_process():
+    data = request.json
+    url = data.get('url', '')
+    if url == '':
+        return jsonify({'error': 'url key is missing or empty'}), 400
+
+    if not check_url(url):
+        return jsonify({'error': 'url is invalid'}), 403
+
+    # Download the image using the signed URL
+    response = requests.get(url)
+
+    im_buffer = 0
+    if response.status_code == 200:
+        # Store the downloaded image in an io.BytesIO object
+        im_buffer = io.BytesIO(response.content)
+
+    original_url, prompt, processed_url, im_buffer = generate_next_image(im_buffer)
+    
+    response = jsonify(status="success", original_url=original_url, processed_url=processed_url, caption=prompt)
         
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
