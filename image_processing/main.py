@@ -73,10 +73,9 @@ def upload_and_process():
     file_content = image.read()
     im_buffer = io.BytesIO(file_content)
 
-    original_url, prompt, processed_url, im_buffer = generate_next_image(im_buffer)
-
     resp_list = []
     for i in range(rounds):
+        original_url, prompt, processed_url, im_buffer = generate_next_image(im_buffer)
         resp_list.append({
             'original_url': original_url,
             'processed_url': processed_url,

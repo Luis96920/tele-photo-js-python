@@ -62,7 +62,7 @@ $(document).ready(function () {
                 console.log(imagePairs[i].caption)
                 const imagePair = imagePairs[i];
                 const row = $('<div class="image-row"></div>');
-                const caption = $('<div class="caption"></div>').text(imagePair.caption);
+                const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
                 const imagePairDiv = $('<div class="image-pair"></div>');
                 const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
                 const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
