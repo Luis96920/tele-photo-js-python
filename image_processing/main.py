@@ -59,8 +59,11 @@ def upload_and_process():
     if "image" not in request.files:
         return jsonify(status="error", message="No image file provided."), 400
 
+    print("Req: {}".format(request))
+
     image = request.files["image"]
     rounds = request.files["number"]
+
 
     if not is_valid_image(image):
         return jsonify(status="error", message="No image file provided."), 400
