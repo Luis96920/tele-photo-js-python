@@ -53,8 +53,8 @@ $(document).ready(function () {
             },
         })
         .then(response => {
-            const imagePairs = response.data;
-            console.log(response)
+            const imagePairs = response.data.data;
+            
             for (let i = 0; i < imagePairs.length; i++) {
                 console.log(imagePairs[i].caption)
                 const imagePair = imagePairs[i];

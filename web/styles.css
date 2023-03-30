@@ -16,7 +16,15 @@ head, body {
     align-items: center;
 }
 
-.images {
+.caption {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-pair {
     display: flex;
     justify-content: space-between;
     width: 100%;
