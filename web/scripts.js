@@ -76,7 +76,7 @@ $(document).ready(function () {
                 "Content-Type": "multipart/form-data",
             },
         })
-        .then(response => {
+        .then(async response => {
             const imagePair = response.data;
             
             // Clear the div
@@ -96,33 +96,33 @@ $(document).ready(function () {
                 let data = {
                     "url" : processed_url
                 }
-                axios.post("https://telephoto.reiform.com/api/url_and_process", data, {
+                try {
+                let response = await axios.post("https://telephoto.reiform.com/api/url_and_process", data, {
                     headers: {
                         "Content-Type": "application/json",
                     },
                 })
-                .then(response => {
-                    const imagePairs = response.data;
-                    
-                    // Clear the div
-    
-                    const imagePair = imagePairs[i];
-                    const row = $('<div class="image-row"></div>');
-                    const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
-                    const imagePairDiv = $('<div class="image-pair"></div>');
-                    const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
-                    const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
-                    imagePairDiv.append(originalImage).append(processedImage);
-                    row.append(caption).append(imagePairDiv);
-                    $('#image-pairs').append(row);
-                    
-                    processed_url = imagePair.processed_url;
-                })
-                .catch(error => {
+                
+                const imagePairs = response.data;
+                
+                // Clear the div
+
+                const imagePair = imagePairs[i];
+                const row = $('<div class="image-row"></div>');
+                const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
+                const imagePairDiv = $('<div class="image-pair"></div>');
+                const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
+                const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
+                imagePairDiv.append(originalImage).append(processedImage);
+                row.append(caption).append(imagePairDiv);
+                $('#image-pairs').append(row);
+                
+                processed_url = imagePair.processed_url;
+                } catch(error) {
                     console.error(error);
                     hideLoadingIcon();
                     stopTimer(timer);
-                });
+                }
             }
     
             hideLoadingIcon();
