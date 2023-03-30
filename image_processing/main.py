@@ -62,7 +62,7 @@ def upload_and_process():
     print("Req: {}".format(request))
 
     image = request.files["image"]
-    rounds = request.form["number"]
+    rounds = int(request.form["number"])
 
 
     if not is_valid_image(image):
