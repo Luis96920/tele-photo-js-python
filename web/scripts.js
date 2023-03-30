@@ -91,10 +91,10 @@ $(document).ready(function () {
             row.append(caption).append(imagePairDiv);
             $('#image-pairs').append(row);
 
-            let original_url = imagePair.original_url;
+            let processed_url = imagePair.processed_url;
             for (let i = 1; i < parseInt(numberValue); i++) {
                 let data = {
-                    "url" : original_url
+                    "url" : processed_url
                 }
                 axios.post("https://telephoto.reiform.com/api/url_and_process", data, {
                     headers: {
@@ -116,7 +116,7 @@ $(document).ready(function () {
                     row.append(caption).append(imagePairDiv);
                     $('#image-pairs').append(row);
                     
-                    original_url = imagePair.original_url;
+                    processed_url = imagePair.processed_url;
                 })
                 .catch(error => {
                     console.error(error);
