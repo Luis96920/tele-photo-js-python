@@ -43,6 +43,9 @@ $(document).ready(function () {
         event.preventDefault();
         const formData = new FormData();
         formData.append("image", imageInput[0].files[0]);
+        const numberDropdown = document.getElementById("number-dropdown");
+        const numberValue = numberDropdown.value;
+        formData.append("number", numberValue);
 
         axios.post("https://telephoto.reiform.com/api/upload_and_process", formData, {
             headers: {
@@ -50,12 +53,18 @@ $(document).ready(function () {
             },
         })
         .then(response => {
-            originalImage.attr("src", response.data.original_url);
-            originalImage.show();
-            processedImage.attr("src", response.data.processed_url);
-            processedImage.show();
-            textAboveImages.text(response.data.text);
-            textAboveImages.show();
+            const imagePairs = response.data;
+            for (let i = 0; i < imagePairs.length; i++) {
+                const imagePair = imagePairs[i];
+                const row = $('<div class="image-row"></div>');
+                const caption = $('<div class="caption"></div>').text(imagePair.caption);
+                const imagePairDiv = $('<div class="image-pair"></div>');
+                const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
+                const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
+                imagePairDiv.append(originalImage).append(processedImage);
+                row.append(caption).append(imagePairDiv);
+                $('#image-pairs').append(row);
+            }
             hideLoadingIcon();
         })
         .catch(error => {

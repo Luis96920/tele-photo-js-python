@@ -46,3 +46,19 @@ button:hover {
     background-color: #ccc;
     cursor: not-allowed;
   }
+
+  .dropdown-container {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  select {
+    display: inline-block;
+  }
+  

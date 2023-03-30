@@ -64,15 +64,25 @@
           </label>
           
     <div class="container">
+        
+        <div class="dropdown-container">
+            <label for="number-dropdown"> <b>Rounds of TelePhoto:</b></label>
+            <select id="number-dropdown" name="number-dropdown">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          
         <form id="upload-form">
             <input type="file" id="image-input" accept="image/*" required>
             <button id="uploadBtn" type="submit">Play Telephoto!</button>
         </form>
-        <div id="text-above-images"></div>
-        <div class="images">
-            <img id="original-image" src="" alt="Original Image" style="display: none;">
-            <img id="processed-image" src="" alt="Processed Image" style="display: none;">
-        </div>
+        
+        <div id="image-pairs"></div>
+        
         <button id="process-image" style="display: none;">Process Image</button>
     </div>
     <div id="loading-icon" style="display:none;">
