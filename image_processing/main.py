@@ -1,4 +1,4 @@
-import os, io
+import os, io, time
 import boto3
 from flask import Flask, request, jsonify
 import uuid
@@ -104,8 +104,12 @@ def generate_next_image(im_buffer):
     original_url = upload_file_to_s3(im_buffer, ORIGINAL_FOLDER, filename)
 
     # Process the image
+    start = time.time()
     prompt = predict_step(image_pil)[0]
+    print("Caption time: {}".format(round(time.time() - start, 2)))
+    start = time.time()
     processed_image = get_new_image(prompt) # process_image(image)  # Implement this function in the image_processing.py file
+    print("Image time: {}".format(round(time.time() - start, 2)))
 
     # Upload the processed image
     processed_filename = "{}-processed.jpg".format(base_name)
