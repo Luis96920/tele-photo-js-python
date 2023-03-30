@@ -60,33 +60,20 @@ def upload_and_process():
         return jsonify(status="error", message="No image file provided."), 400
 
     image = request.files["image"]
-    rounds = min(int(request.form["number"]), 5)
 
+    try:
+        rounds = int(request.form['number'])
+        rounds = min(rounds, 5)
+    except ValueError:
+        return jsonify({'error': 'Invalid input: not an integer'}), 400
 
     if not is_valid_image(image):
         return jsonify(status="error", message="No image file provided."), 400
 
     file_content = image.read()
-
     im_buffer = io.BytesIO(file_content)
-    im_buffer_dup = io.BytesIO(im_buffer.read())
-    im_buffer.seek(0)
-    image_pil = Image.open(im_buffer_dup)
 
-    base_name = str(uuid.uuid1())
-    filename = base_name + ".jpg"
-
-    # Upload the original image
-    original_url = upload_file_to_s3(im_buffer, ORIGINAL_FOLDER, filename)
-
-    # Process the image
-    prompt = predict_step(image_pil)[0]
-    processed_image = get_new_image(prompt) # process_image(image)  # Implement this function in the image_processing.py file
-
-    # Upload the processed image
-    processed_filename = "{}-processed.jpg".format(base_name)
-    with open(processed_image, 'rb') as proc_im:
-        processed_url = upload_file_to_s3(proc_im, PROCESSED_FOLDER, processed_filename)
+    original_url, prompt, processed_url, file_content, im_buffer = generate_next_image(im_buffer)
 
     resp_list = []
     for i in range(rounds):
@@ -105,12 +92,31 @@ def upload_and_process():
 
     return response
 
-# @app.after_request
-# def after_request(response):
-#   response.headers.add('Access-Control-Allow-Origin', '*')
-#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-#   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-#   return response
+def generate_next_image(im_buffer):
+
+    im_buffer_dup = io.BytesIO(im_buffer.read())
+    im_buffer.seek(0)
+    image_pil = Image.open(im_buffer_dup)
+
+    base_name = str(uuid.uuid1())
+    filename = base_name + ".jpg"
+
+    # Upload the original image
+    original_url = upload_file_to_s3(im_buffer, ORIGINAL_FOLDER, filename)
+
+    # Process the image
+    prompt = predict_step(image_pil)[0]
+    processed_image = get_new_image(prompt) # process_image(image)  # Implement this function in the image_processing.py file
+
+    # Upload the processed image
+    processed_filename = "{}-processed.jpg".format(base_name)
+    proc_im_dup = 0
+    with open(processed_image, 'rb') as proc_im:
+        proc_im_dup = io.BytesIO(proc_im.raw.read())
+        proc_im.raw.seek(0)
+        processed_url = upload_file_to_s3(proc_im, PROCESSED_FOLDER, processed_filename)
+    return original_url, prompt, processed_url, proc_im_dup
+
 
 if __name__ == "__main__":
     app.run(debug=True)

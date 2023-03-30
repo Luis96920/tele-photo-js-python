@@ -55,6 +55,9 @@ $(document).ready(function () {
         .then(response => {
             const imagePairs = response.data.data;
             
+            // Clear the div
+            $('#image-pairs').empty();
+
             for (let i = 0; i < imagePairs.length; i++) {
                 console.log(imagePairs[i].caption)
                 const imagePair = imagePairs[i];
