@@ -54,6 +54,7 @@ $(document).ready(function () {
         })
         .then(response => {
             const imagePairs = response.data;
+            console.log(response)
             for (let i = 0; i < imagePairs.length; i++) {
                 console.log(imagePairs[i].caption)
                 const imagePair = imagePairs[i];

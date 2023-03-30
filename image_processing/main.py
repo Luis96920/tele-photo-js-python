@@ -60,7 +60,7 @@ def upload_and_process():
         return jsonify(status="error", message="No image file provided."), 400
 
     image = request.files["image"]
-    rounds = int(request.form["number"])
+    rounds = min(int(request.form["number"]), 5)
 
 
     if not is_valid_image(image):
