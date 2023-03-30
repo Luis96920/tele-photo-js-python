@@ -59,7 +59,6 @@ $(document).ready(function () {
             $('#image-pairs').empty();
 
             for (let i = 0; i < imagePairs.length; i++) {
-                console.log(imagePairs[i].caption)
                 const imagePair = imagePairs[i];
                 const row = $('<div class="image-row"></div>');
                 const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
