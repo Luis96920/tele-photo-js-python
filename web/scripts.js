@@ -103,11 +103,9 @@ $(document).ready(function () {
                     },
                 })
                 
-                const imagePairs = response.data;
+                const imagePair = response.data;
                 
                 // Clear the div
-
-                const imagePair = imagePairs[i];
                 const row = $('<div class="image-row"></div>');
                 const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
                 const imagePairDiv = $('<div class="image-pair"></div>');
