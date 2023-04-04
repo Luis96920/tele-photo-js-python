@@ -70,3 +70,6 @@ button:hover {
     display: inline-block;
   }
   
+  #fileList img {
+    margin: 5px;
+  }

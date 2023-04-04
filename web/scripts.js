@@ -11,6 +11,35 @@ $(document).ready(function () {
     uploadBtn.prop('disabled', true);
     uploadBtn.addClass('disabled-btn');
 
+    const fileList = document.getElementById('fileList');
+    const fileInput = document.getElementById('image-input');
+
+    fileInput.addEventListener('change', (event) => {
+        const files = event.target.files;
+  
+        // limit the number of files selected to 5
+        if (files.length > 5) {
+          alert("Please select no more than 5 files.");
+          return;
+        }
+      
+        // loop through the selected files and create a FileReader for each
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const reader = new FileReader();
+      
+          // set up the FileReader to display the image on load
+          reader.onload = (event) => {
+            const imageElement = document.createElement("img");
+            imageElement.src = event.target.result;
+            fileList.appendChild(imageElement);
+          };
+      
+          // read the file as a data URL
+          reader.readAsDataURL(file);
+        }
+    });
+
     termsCheckbox.on('change', function () {
       // Enable or disable the button based on the checkbox state
       uploadBtn.prop('disabled', !termsCheckbox.prop('checked'));

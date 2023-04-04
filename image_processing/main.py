@@ -10,6 +10,7 @@ import base64
 import requests
 from PIL import Image
 import magic
+import re
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes and origins by default
@@ -54,6 +55,9 @@ def is_valid_image(file):
     file.stream.seek(0)  # Reset the file stream position
     return mime.startswith('image/')
 
+def clean_description(description):
+    return re.sub(r'[^a-zA-Z0-9\-!@#. ]', '', description)
+
 
 @app.route("/api/upload_and_process", methods=["POST"])
 def upload_and_process():
@@ -64,6 +68,14 @@ def upload_and_process():
 
     if not is_valid_image(image):
         return jsonify(status="error", message="No image file provided."), 400
+
+    if 'description' not in request.form:
+        return jsonify({'error': 'No description provided'}), 400
+
+    description = clean_description(request.form['description'])
+    if len(description) > 256:
+        return jsonify({'error': 'Description must be 256 characters or fewer'}), 400
+
 
     file_content = image.read()
     im_buffer = io.BytesIO(file_content)
