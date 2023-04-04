@@ -60,6 +60,12 @@ button:hover {
     display: flex;
     align-items: center;
   }
+
+  .subject-container {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+  }
   
   label {
     display: inline-block;
