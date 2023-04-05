@@ -98,7 +98,7 @@ def upload_and_process():
 
     print(request.files)
 
-    if "image" not in request.files and "images" in request.files:
+    if "image" not in request.files and "images[]" in request.files:
         prompt, processed_url = upload_and_process_multi_image(request)
 
     else:
