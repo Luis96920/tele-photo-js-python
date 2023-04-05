@@ -33,6 +33,17 @@ head, body {
     flex-direction: column;
 }
 
+.fileList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 10px;
+}
+
+.fileList img {
+  max-width: 100%;
+  height: auto;
+}
+
 img {
     max-width: 90%;
     height: auto;
