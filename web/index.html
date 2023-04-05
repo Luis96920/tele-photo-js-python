@@ -68,7 +68,7 @@
           
     <div class="container">
         
-        <div class="dropdown-container">
+        <div class="dropdown-container" id="dropdown-container" style="display: none;">
             <label for="number-dropdown"> <b>Rounds of TelePhoto:</b></label>
             <select id="number-dropdown" name="number-dropdown">
               <option value="1">1</option>
@@ -78,8 +78,8 @@
               <option value="5">5</option>
             </select>
           </div>
-          <div class="subject-container">
-          <label for="number-dropdown"> <b>Image subject label(s):</b></label>
+          <div class="subject-container" id="subject-container">
+          <label for="class-keyword"> <b>Common Subject (hint):</b></label>
           <input id="class-keyword" type="text" name="class-keyword" placeholder="unknown subject"  maxlength="256">
           </div>
         <form id="upload-form">

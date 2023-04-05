@@ -9,6 +9,9 @@ $(document).ready(function () {
     const fileList = document.getElementById('fileList');
     const fileInput = document.getElementById('image-input');
 
+    const dropdownContainer = document.getElementById('dropdown-container');
+    const subjectContainer = document.getElementById('subject-container');
+
     fileInput.addEventListener('change', (event) => {
         const files = event.target.files;
   
@@ -38,8 +41,12 @@ $(document).ready(function () {
     versionCheckbox.addEventListener("change", (event) => {
         if (event.target.checked) {
             fileInput.removeAttribute("multiple");
+            dropdownContainer.style.display = '';
+            subjectContainer.style.display = 'none';
         } else {
             fileInput.setAttribute("multiple", "");
+            dropdownContainer.style.display = 'none';
+            subjectContainer.style.display = '';
         }
       });
 
@@ -83,14 +90,24 @@ $(document).ready(function () {
     uploadForm.on("submit", function (event) {
         showLoadingIcon();
         const numberDropdown = document.getElementById("number-dropdown");
-        const numberValue = numberDropdown.value;
-        updateCountdown(12*parseInt(numberValue));
-        timer = startTimer(12 * parseInt(numberValue));
+        let numberValue = parseInt(numberDropdown.value);
+        if (!versionCheckbox.value) {
+            numberValue = 1;
+            updateCountdown(30);
+            timer = startTimer(30);
+            const labelField = document.getElementById("class-keyword");
+            const formData = new FormData();
+            for (let i = 0; i < imageInput.length; i++) {
+                formData.append('images', imageInput[i].files[0]);
+            }
+            formData.append("description", labelField.value);
+        } else {
+            updateCountdown(12*numberValue);
+            timer = startTimer(12 * numberValue);
+            formData.append("image", imageInput[0].files);
+        }
+
         event.preventDefault();
-        const labelField = document.getElementById("class-keyword");
-        const formData = new FormData();
-        formData.append("image", imageInput[0].files[0]);
-        formData.append("description", labelField.value);
 
         axios.post("https://telephoto.reiform.com/api/upload_and_process", formData, {
             headers: {
@@ -112,7 +129,7 @@ $(document).ready(function () {
             $('#image-pairs').append(row);
 
             let processed_url = imagePair.processed_url;
-            for (let i = 1; i < parseInt(numberValue); i++) {
+            for (let i = 1; i < numberValue; i++) {
                 let data = {
                     "url" : processed_url
                 }

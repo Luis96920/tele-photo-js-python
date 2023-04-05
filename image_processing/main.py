@@ -9,6 +9,7 @@ from image_gen import get_new_image
 import base64
 import requests
 from PIL import Image
+from reduce_many_captions import make_caption
 import magic
 import re
 
@@ -59,15 +60,15 @@ def clean_description(description):
     return re.sub(r'[^a-zA-Z0-9\-!@#. ]', '', description)
 
 
-@app.route("/api/upload_and_process", methods=["POST"])
-def upload_and_process():
-    if "image" not in request.files:
-        return jsonify(status="error", message="No image file provided."), 400
+def upload_and_process_multi_image(request):
+    if "images[]" not in request.files:
+        return jsonify(status="error", message="No images files provided."), 400
 
-    image = request.files["image"]
+    images = request.files["images[]"]
 
-    if not is_valid_image(image):
-        return jsonify(status="error", message="No image file provided."), 400
+    for image in images:
+        if not is_valid_image(image):
+            return jsonify(status="error", message="No image file provided."), 400
 
     if 'description' not in request.form:
         return jsonify({'error': 'No description provided'}), 400
@@ -75,12 +76,41 @@ def upload_and_process():
     description = clean_description(request.form['description'])
     if len(description) > 256:
         return jsonify({'error': 'Description must be 256 characters or fewer'}), 400
+    
+    captions = []
+    for image in images:
+        file_content = image.read()
+        im_buffer = io.BytesIO(file_content)
+        captions.append(caption_image(im_buffer))
 
+    prompt = make_caption(captions, description)
 
-    file_content = image.read()
-    im_buffer = io.BytesIO(file_content)
+    processed_url = generate_and_save_image(prompt)
 
-    prompt, processed_url, im_buffer = generate_next_image(im_buffer)
+    return prompt, processed_url
+
+@app.route("/api/upload_and_process", methods=["POST"])
+def upload_and_process():
+
+    prompt
+
+    if "image" not in request.files and "images[]" in request.files:
+        prompt, processed_url = upload_and_process_multi_image(request)
+
+    else:
+
+        if "image" not in request.files:
+            return jsonify(status="error", message="No image file provided."), 400
+
+        image = request.files["image"]
+
+        if not is_valid_image(image):
+            return jsonify(status="error", message="No image file provided."), 400
+
+        file_content = image.read()
+        im_buffer = io.BytesIO(file_content)
+
+        prompt, processed_url = generate_next_image(im_buffer)
     
     response = jsonify(status="success", processed_url=processed_url, caption=prompt)
         
@@ -131,7 +161,7 @@ def url_and_process():
         # Store the downloaded image in an io.BytesIO object
         im_buffer = io.BytesIO(response.content)
 
-    prompt, processed_url, im_buffer = generate_next_image(im_buffer)
+    prompt, processed_url = generate_next_image(im_buffer)
     
     response = jsonify(status="success", processed_url=processed_url, caption=prompt)
         
@@ -144,28 +174,33 @@ def url_and_process():
 
 def generate_next_image(im_buffer):
 
-    im_buffer_dup = io.BytesIO(im_buffer.read())
-    im_buffer.seek(0)
-    image_pil = Image.open(im_buffer_dup)
+    prompt = caption_image(im_buffer)
+    processed_url = generate_and_save_image(prompt)
+    return prompt, processed_url
 
-    base_name = str(uuid.uuid1())
-
-    # Process the image
-    start = time.time()
-    prompt = predict_step(image_pil)[0]
-    print("Caption time: {}".format(round(time.time() - start, 2)))
+def generate_and_save_image(prompt):
     start = time.time()
     processed_image = get_new_image(prompt) # process_image(image)  # Implement this function in the image_processing.py file
     print("Image time: {}".format(round(time.time() - start, 2)))
 
     # Upload the processed image
+    base_name = str(uuid.uuid1())
     processed_filename = "{}-processed.jpg".format(base_name)
-    proc_im_dup = 0
+    
     with open(processed_image, 'rb') as proc_im:
-        proc_im_dup = io.BytesIO(proc_im.raw.read())
-        proc_im.raw.seek(0)
         processed_url = upload_file_to_s3(proc_im, PROCESSED_FOLDER, processed_filename)
-    return prompt, processed_url, proc_im_dup
+    return processed_url
+
+def caption_image(im_buffer):
+    im_buffer_dup = io.BytesIO(im_buffer.read())
+    im_buffer.seek(0)
+    image_pil = Image.open(im_buffer_dup)
+
+    # Process the image
+    start = time.time()
+    prompt = predict_step(image_pil)[0]
+    print("Caption time: {}".format(round(time.time() - start, 2)))
+    return prompt
 
 
 if __name__ == "__main__":
