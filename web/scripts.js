@@ -123,8 +123,8 @@ $(document).ready(function () {
         const formData = new FormData();
         if (!versionCheckbox.checked) {
             numberValue = 1;
-            updateCountdown(30);
-            timer = startTimer(30);
+            updateCountdown(fileInput.files.length * 11);
+            timer = startTimer(fileInput.files.length * 11);
             const labelField = document.getElementById("class-keyword");
             for (let i = 0; i < Math.min(fileInput.files.length, 5); i++) {
                 formData.append('images[]', fileInput.files[i]);
@@ -159,9 +159,9 @@ $(document).ready(function () {
             row.append(caption).append(imagePairDiv);
             $('#image-pairs').append(row);
 
-            fileURLs = [imagePair.processedImage]
-
+            
             let processed_url = imagePair.processed_url;
+            fileURLs = [processed_url]
             for (let i = 1; i < numberValue; i++) {
                 let data = {
                     "url" : processed_url
