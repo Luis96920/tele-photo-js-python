@@ -69,7 +69,7 @@ def upload_and_process_multi_image(request):
     for image in images:
         print(image)
         if not is_valid_image(image):
-            return jsonify(status="error", message="No image file provided."), 400
+            return jsonify(status="error", message="Invalid image file provided."), 400
 
     if 'description' not in request.form:
         return jsonify({'error': 'No description provided'}), 400
