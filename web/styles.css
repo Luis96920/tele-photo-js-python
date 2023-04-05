@@ -38,16 +38,16 @@ head, body {
   flex-direction: horizontal;
 }
 
-.fileList img {
-  display: inline;
-  max-width: 1em;
-  height: auto;
-}
-
 img {
     max-width: 90%;
     height: auto;
     object-fit: cover;
+}
+
+.fileList img {
+  display: inline;
+  max-width: 45%;
+  height: auto;
 }
 
 button {
