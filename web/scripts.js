@@ -106,15 +106,16 @@ $(document).ready(function () {
     const downloadAllButton = document.getElementById('download-all');
 
     downloadAllButton.addEventListener('click', () => {
-        fileURLs.forEach((fileUrl) => {
+        fileURLs.forEach((fileUrl, i) => {
             const link = document.createElement('a');
             link.setAttribute("download", "")
             link.href = fileUrl;
             link.download = fileUrl.split('/').pop();
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            link.style.display = 'none';document.body.appendChild(link);
+            setTimeout(() => {
+              link.click();
+              document.body.removeChild(link);
+            }, i * 500);
         });
     });
     
