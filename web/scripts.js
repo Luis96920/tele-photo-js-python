@@ -110,7 +110,7 @@ $(document).ready(function () {
         } else {
             updateCountdown(12*numberValue);
             timer = startTimer(12 * numberValue);
-            formData.append("image", imageInput[0].files);
+            formData.append("image", imageInput[0].files[0]);
         }
 
         event.preventDefault();
