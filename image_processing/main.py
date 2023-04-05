@@ -67,6 +67,7 @@ def upload_and_process_multi_image(request):
     images = request.files["images[]"]
 
     for image in images:
+        print(image)
         if not is_valid_image(image):
             return jsonify(status="error", message="No image file provided."), 400
 
