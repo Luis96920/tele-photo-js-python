@@ -106,14 +106,12 @@ $(document).ready(function () {
         const numberDropdown = document.getElementById("number-dropdown");
         let numberValue = parseInt(numberDropdown.value);
         const formData = new FormData();
-        console.log(versionCheckbox.checked)
         if (!versionCheckbox.checked) {
-            console.log("Multi")
             numberValue = 1;
             updateCountdown(30);
             timer = startTimer(30);
             const labelField = document.getElementById("class-keyword");
-            for (let i = 0; i < fileInput.files.length; i++) {
+            for (let i = 0; i < Math.min(fileInput.files.length, 5); i++) {
                 formData.append('images[]', fileInput.files[i]);
             }
             formData.append("description", labelField.value);
