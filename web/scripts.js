@@ -91,12 +91,13 @@ $(document).ready(function () {
         showLoadingIcon();
         const numberDropdown = document.getElementById("number-dropdown");
         let numberValue = parseInt(numberDropdown.value);
+        const formData = new FormData();
+        console.log(versionCheckbox.value)
         if (!versionCheckbox.value) {
             numberValue = 1;
             updateCountdown(30);
             timer = startTimer(30);
             const labelField = document.getElementById("class-keyword");
-            const formData = new FormData();
             for (let i = 0; i < imageInput.length; i++) {
                 formData.append('images', imageInput[i].files[0]);
             }
