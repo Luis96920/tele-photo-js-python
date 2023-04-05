@@ -1,9 +1,9 @@
 // scripts.js
 $(document).ready(function () {
     const uploadForm = $("#upload-form");
-    const countdownTimer = $("#countdown-timer")
+    const countdownTimer = $("#countdown-timer");
     
-    const imageInput = document.getElementById('image-input');
+    const imageInput = $("#image-input");
     const versionCheckbox = document.getElementById('version');
 
     const fileList = document.getElementById('fileList');
