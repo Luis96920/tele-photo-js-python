@@ -114,16 +114,6 @@ $(document).ready(function () {
         });
     });
     
-    function downloadFile(fileUrl) {
-        const link = document.createElement('a');
-        link.href = fileUrl;
-        link.download = fileUrl.split('/').pop();
-        link.style.display = 'none';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
     let fileURLs = []
 
     uploadForm.on("submit", function (event) {

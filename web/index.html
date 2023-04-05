@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
+    <script>
+
+      function downloadFile(fileUrl) {
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = fileUrl.split('/').pop();
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+      </script>
     <style>
         /* Add this CSS rule for the loading icon container */
         #loading-icon {
