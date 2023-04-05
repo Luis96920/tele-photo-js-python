@@ -54,7 +54,7 @@
     <!-- Inside the <body> tag -->
         <div id="top-section">
         <h1> Welcome to TelePhoto </h1>
-        <h2> Now introducing multi-image TelePhoto. This is a tougher game for the AIs, so you can give them hints!</h2>
+        <h2> Now introducing multi-image TelePhoto. The game starts with up to 5 images. This is a tougher game for the AIs, so you can give them hints!</h2>
         <h3> An image-based game of Telephone starting with YOU and passing through several generative AI models. </h3>
         <h3> The first AI model generates a caption for your image(s). 
             <br> The second AI model generates an image for that caption. <br>
@@ -87,6 +87,7 @@
             <input type="file" id="image-input" accept="image/*" name="images[]" required multiple>
             <button id="uploadBtn" type="submit">Play Telephoto!</button>
         </form>
+        <button id="download-all">Download Generated Image(s)</button>
         <div id="fileListSingle"></div>
         <div id="fileList"></div>
         

@@ -99,7 +99,22 @@ $(document).ready(function () {
     function stopTimer(timerInterval) {
     clearInterval(timerInterval);
     }
+
+    const downloadAllButton = document.getElementById('download-all');
+
+    downloadAllButton.addEventListener('click', () => {
+        fileURLs.forEach((fileUrl) => {
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = fileUrl.split('/').pop();
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    });
     
+    let fileURLs = []
 
     uploadForm.on("submit", function (event) {
         showLoadingIcon();
@@ -123,6 +138,8 @@ $(document).ready(function () {
 
         event.preventDefault();
 
+        fileURLs = []
+
         axios.post("https://telephoto.reiform.com/api/upload_and_process", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -141,6 +158,8 @@ $(document).ready(function () {
             imagePairDiv.append(processedImage);
             row.append(caption).append(imagePairDiv);
             $('#image-pairs').append(row);
+
+            fileURLs = [imagePair.processedImage]
 
             let processed_url = imagePair.processed_url;
             for (let i = 1; i < numberValue; i++) {
@@ -166,6 +185,7 @@ $(document).ready(function () {
                 $('#image-pairs').append(row);
                 
                 processed_url = imagePair.processed_url;
+                fileURLs.push(processed_url)
                 } catch(error) {
                     console.error(error);
                     hideLoadingIcon();
