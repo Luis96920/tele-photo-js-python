@@ -61,10 +61,10 @@ def clean_description(description):
 
 
 def upload_and_process_multi_image(request):
-    if "images[]" not in request.files:
+    if "images" not in request.files:
         return jsonify(status="error", message="No images files provided."), 400
 
-    images = request.files["images[]"]
+    images = request.files["images"]
 
     for image in images:
         print(image)
@@ -98,7 +98,7 @@ def upload_and_process():
 
     print(request.files)
 
-    if "image" not in request.files and "images[]" in request.files:
+    if "image" not in request.files and "images" in request.files:
         prompt, processed_url = upload_and_process_multi_image(request)
 
     else:

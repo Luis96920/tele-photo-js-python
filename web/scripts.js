@@ -41,10 +41,12 @@ $(document).ready(function () {
     versionCheckbox.addEventListener("change", (event) => {
         if (event.target.checked) {
             fileInput.removeAttribute("multiple");
+            fileInput.removeAttribute("name");
             dropdownContainer.style.display = '';
             subjectContainer.style.display = 'none';
         } else {
             fileInput.setAttribute("multiple", "");
+            fileInput.setAttribute("name", "images[]");
             dropdownContainer.style.display = 'none';
             subjectContainer.style.display = '';
         }
@@ -99,8 +101,8 @@ $(document).ready(function () {
             updateCountdown(30);
             timer = startTimer(30);
             const labelField = document.getElementById("class-keyword");
-            for (let i = 0; i < imageInput.length; i++) {
-                formData.append('images', imageInput[i].files[0]);
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('images[]', fileInput.files[i]);
             }
             formData.append("description", labelField.value);
         } else {
