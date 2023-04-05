@@ -44,11 +44,13 @@ $(document).ready(function () {
             fileInput.removeAttribute("name");
             dropdownContainer.style.display = '';
             subjectContainer.style.display = 'none';
+            fileList.empty();
         } else {
             fileInput.setAttribute("multiple", "");
             fileInput.setAttribute("name", "images[]");
             dropdownContainer.style.display = 'none';
             subjectContainer.style.display = '';
+            fileList.empty();
         }
       });
 
