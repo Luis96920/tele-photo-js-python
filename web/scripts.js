@@ -19,6 +19,7 @@ $(document).ready(function () {
         // limit the number of files selected to 5
         if (files.length > 5) {
           alert("Please select no more than 5 files.");
+          fileInput.value = '';
           return;
         }
         
@@ -49,6 +50,8 @@ $(document).ready(function () {
     });
 
     versionCheckbox.addEventListener("change", (event) => {
+        // fileInput.files = []
+        fileInput.value = '';
         if (event.target.checked) {
             fileInput.removeAttribute("multiple");
             fileInput.removeAttribute("name");
