@@ -108,6 +108,7 @@ $(document).ready(function () {
     downloadAllButton.addEventListener('click', () => {
         fileURLs.forEach((fileUrl) => {
             const link = document.createElement('a');
+            link.setAttribute("download", "")
             link.href = fileUrl;
             link.download = fileUrl.split('/').pop();
             link.style.display = 'none';
