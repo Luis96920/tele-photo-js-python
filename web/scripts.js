@@ -165,7 +165,7 @@ $(document).ready(function () {
             const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
             const imagePairDiv = $('<div class="image-pair"></div>');
             const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
-            const downloadButton = $(`<button onclick="downloadFile(${imagePair.processed_url})" >Download Image</a>`)
+            const downloadButton = $(`<button onclick="downloadFile('${imagePair.processed_url}')" >Download Image</a>`)
             imagePairDiv.append(processedImage).append(downloadButton);
             row.append(caption).append(imagePairDiv);
             $('#image-pairs').append(row);
