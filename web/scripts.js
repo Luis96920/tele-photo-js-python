@@ -94,6 +94,7 @@ $(document).ready(function () {
         const formData = new FormData();
         console.log(versionCheckbox.value)
         if (!versionCheckbox.value) {
+            console.log("Multi")
             numberValue = 1;
             updateCountdown(30);
             timer = startTimer(30);
