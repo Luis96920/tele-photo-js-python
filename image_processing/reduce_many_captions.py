@@ -10,7 +10,6 @@ openai.api_key = get_key()
 def make_caption(captions, class_label):
 
     suffix = "An important word to make the subject of your caption is {}.".format(class_label)
-    # suffix = ""
 
     response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",

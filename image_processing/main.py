@@ -68,6 +68,8 @@ def upload_and_process_multi_image(images, description):
         im_buffer = io.BytesIO(file_content)
         captions.append(caption_image(im_buffer))
 
+    print(description)
+
     prompt = make_caption(captions, description)
 
     processed_url = generate_and_save_image(prompt)
@@ -79,8 +81,6 @@ def upload_and_process():
 
     prompt = ""
     processed_url = ""
-
-    print(request.files)
 
     if "image" not in request.files and "images[]" in request.files:
         
