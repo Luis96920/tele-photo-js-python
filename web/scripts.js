@@ -104,7 +104,7 @@ $(document).ready(function () {
             $('#image-pairs').empty();
 
             const row = $('<div class="image-row"></div>');
-            const caption = $('<div class="caption"></div>').text(`vv ${imagePair.caption} vv`);
+            const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
             const imagePairDiv = $('<div class="image-pair"></div>');
             const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
             imagePairDiv.append(processedImage);
