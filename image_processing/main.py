@@ -135,7 +135,7 @@ def check_url(url):
             return False
         
         filename_str = start_str + "bf7da412-cec6-11ed-b80b-060f2440ce9d"
-        proc_str = "-processed.jpg?"
+        proc_str = "-processed.png?"
         if url[len(filename_str): len(filename_str) + len(proc_str)] != proc_str:
             return False
         
@@ -192,7 +192,7 @@ def generate_and_save_image(prompt):
 
     # Upload the processed image
     base_name = str(uuid.uuid1())
-    processed_filename = "{}-processed.jpg".format(base_name)
+    processed_filename = "{}-processed.png".format(base_name)
     
     with open(processed_image, 'rb') as proc_im:
         processed_url = upload_file_to_s3(proc_im, PROCESSED_FOLDER, processed_filename)

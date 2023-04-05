@@ -180,7 +180,9 @@ $(document).ready(function () {
                 const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
                 const imagePairDiv = $('<div class="image-pair"></div>');
                 const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
+                const downloadButton = $(`<a href="${imagePair.processed_url}" download="generate-image.png">Download Image</a>`)
                 imagePairDiv.append(processedImage);
+                imagePairDiv.append(downloadButton);
                 row.append(caption).append(imagePairDiv);
                 $('#image-pairs').append(row);
                 
