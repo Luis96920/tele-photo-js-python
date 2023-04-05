@@ -87,7 +87,7 @@ def upload_and_process():
         if "images[]" not in request.files:
             return jsonify(status="error", message="No images files provided."), 400
 
-        images = request.files["images"]
+        images = request.files.getlist('images[]')
 
         for image in images:
             print(image)
