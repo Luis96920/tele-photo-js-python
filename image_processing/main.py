@@ -92,7 +92,8 @@ def upload_and_process_multi_image(request):
 @app.route("/api/upload_and_process", methods=["POST"])
 def upload_and_process():
 
-    prompt
+    prompt = ""
+    processed_url = ""
 
     if "image" not in request.files and "images[]" in request.files:
         prompt, processed_url = upload_and_process_multi_image(request)
