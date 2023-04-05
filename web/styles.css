@@ -44,12 +44,6 @@ img {
     object-fit: cover;
 }
 
-.fileList img {
-  display: inline;
-  max-width: 45%;
-  height: auto;
-}
-
 button {
     margin-top: 20px;
     padding: 10px 20px;
@@ -91,4 +85,7 @@ button:hover {
   
   #fileList img {
     margin: 5px;
+    display: inline;
+    max-width: 45%;
+    height: auto;
   }
