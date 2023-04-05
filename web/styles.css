@@ -41,7 +41,7 @@ head, body {
 
 .fileList img {
   display: inline;
-  max-width: 45%;
+  max-width: 1em;
   height: auto;
 }
 
