@@ -31,7 +31,7 @@ s3 = boto3.client(
 
 # Set up the S3 bucket and folder names
 S3_BUCKET_NAME = "tele-photo"
-ORIGINAL_FOLDER = "original-images/"
+# ORIGINAL_FOLDER = "original-images/"
 PROCESSED_FOLDER = "processed-images/"
 
 
@@ -80,9 +80,9 @@ def upload_and_process():
     file_content = image.read()
     im_buffer = io.BytesIO(file_content)
 
-    original_url, prompt, processed_url, im_buffer = generate_next_image(im_buffer)
+    prompt, processed_url, im_buffer = generate_next_image(im_buffer)
     
-    response = jsonify(status="success", original_url=original_url, processed_url=processed_url, caption=prompt)
+    response = jsonify(status="success", processed_url=processed_url, caption=prompt)
         
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
@@ -131,9 +131,9 @@ def url_and_process():
         # Store the downloaded image in an io.BytesIO object
         im_buffer = io.BytesIO(response.content)
 
-    original_url, prompt, processed_url, im_buffer = generate_next_image(im_buffer)
+    prompt, processed_url, im_buffer = generate_next_image(im_buffer)
     
-    response = jsonify(status="success", original_url=original_url, processed_url=processed_url, caption=prompt)
+    response = jsonify(status="success", processed_url=processed_url, caption=prompt)
         
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
@@ -149,10 +149,6 @@ def generate_next_image(im_buffer):
     image_pil = Image.open(im_buffer_dup)
 
     base_name = str(uuid.uuid1())
-    filename = base_name + ".jpg"
-
-    # Upload the original image
-    original_url = upload_file_to_s3(im_buffer, ORIGINAL_FOLDER, filename)
 
     # Process the image
     start = time.time()
@@ -169,7 +165,7 @@ def generate_next_image(im_buffer):
         proc_im_dup = io.BytesIO(proc_im.raw.read())
         proc_im.raw.seek(0)
         processed_url = upload_file_to_s3(proc_im, PROCESSED_FOLDER, processed_filename)
-    return original_url, prompt, processed_url, proc_im_dup
+    return prompt, processed_url, proc_im_dup
 
 
 if __name__ == "__main__":
