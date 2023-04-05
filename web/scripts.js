@@ -7,6 +7,7 @@ $(document).ready(function () {
     const versionCheckbox = document.getElementById('version');
 
     const fileList = document.getElementById('fileList');
+    const fileListSingle = document.getElementById('fileListSingle');
     const fileInput = document.getElementById('image-input');
 
     const dropdownContainer = document.getElementById('dropdown-container');
@@ -14,13 +15,21 @@ $(document).ready(function () {
 
     fileInput.addEventListener('change', (event) => {
         const files = event.target.files;
-  
+        
         // limit the number of files selected to 5
         if (files.length > 5) {
           alert("Please select no more than 5 files.");
           return;
         }
-      
+        
+        $("#fileList").empty();
+        $("#fileListSingle").empty();
+        
+        let fileContainer = fileList
+        if (versionCheckbox.checked) {
+            fileContainer = fileListSingle
+        }
+
         // loop through the selected files and create a FileReader for each
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
@@ -30,12 +39,13 @@ $(document).ready(function () {
           reader.onload = (event) => {
             const imageElement = document.createElement("img");
             imageElement.src = event.target.result;
-            fileList.appendChild(imageElement);
+            fileContainer.appendChild(imageElement);
           };
       
           // read the file as a data URL
           reader.readAsDataURL(file);
         }
+
     });
 
     versionCheckbox.addEventListener("change", (event) => {
@@ -44,13 +54,13 @@ $(document).ready(function () {
             fileInput.removeAttribute("name");
             dropdownContainer.style.display = '';
             subjectContainer.style.display = 'none';
-            fileList.empty();
+            $("#fileList").empty();
         } else {
             fileInput.setAttribute("multiple", "");
             fileInput.setAttribute("name", "images[]");
             dropdownContainer.style.display = 'none';
             subjectContainer.style.display = '';
-            fileList.empty();
+            $("#fileListSingle").empty();
         }
       });
 

@@ -38,6 +38,11 @@ head, body {
   flex-direction: horizontal;
 }
 
+.fileListSingle {
+  display: flex;
+  flex-direction: horizontal;
+}
+
 img {
     max-width: 90%;
     height: auto;
@@ -86,6 +91,13 @@ button:hover {
   #fileList img {
     margin: 5px;
     display: inline;
-    max-width: 45%;
+    max-width: 27%;
+    height: auto;
+  }
+  
+  #fileListSingle img {
+    margin: 5px;
+    display: inline;
+    max-width: 90%;
     height: auto;
   }
