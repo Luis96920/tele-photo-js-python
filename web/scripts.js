@@ -87,9 +87,10 @@ $(document).ready(function () {
         updateCountdown(12*parseInt(numberValue));
         timer = startTimer(12 * parseInt(numberValue));
         event.preventDefault();
+        const labelField = document.getElementById("class-keyword");
         const formData = new FormData();
         formData.append("image", imageInput[0].files[0]);
-        formData.append("number", numberValue);
+        formData.append("description", labelField.value);
 
         axios.post("https://telephoto.reiform.com/api/upload_and_process", formData, {
             headers: {
