@@ -92,8 +92,8 @@ $(document).ready(function () {
         const numberDropdown = document.getElementById("number-dropdown");
         let numberValue = parseInt(numberDropdown.value);
         const formData = new FormData();
-        console.log(versionCheckbox.value)
-        if (!versionCheckbox.value) {
+        console.log(versionCheckbox.checked)
+        if (!versionCheckbox.checked) {
             console.log("Multi")
             numberValue = 1;
             updateCountdown(30);
