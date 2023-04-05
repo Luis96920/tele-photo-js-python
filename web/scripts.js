@@ -37,9 +37,9 @@ $(document).ready(function () {
 
     versionCheckbox.addEventListener("change", (event) => {
         if (event.target.checked) {
-            imageInput.removeAttribute("multiple");
+            fileInput.removeAttribute("multiple");
         } else {
-            imageInput.setAttribute("multiple", "");
+            fileInput.setAttribute("multiple", "");
         }
       });
 
