@@ -114,6 +114,16 @@ $(document).ready(function () {
         });
     });
     
+    function downloadFile(fileUrl) {
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileUrl.split('/').pop();
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     let fileURLs = []
 
     uploadForm.on("submit", function (event) {
@@ -155,7 +165,7 @@ $(document).ready(function () {
             const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
             const imagePairDiv = $('<div class="image-pair"></div>');
             const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
-            const downloadButton = $(`<a href="${imagePair.processed_url}" class="image-button" download="generate-image.png">Download Image</a>`)
+            const downloadButton = $(`<button onclick="downloadFile(${imagePair.processed_url})" >Download Image</a>`)
             imagePairDiv.append(processedImage).append(downloadButton);
             row.append(caption).append(imagePairDiv);
             $('#image-pairs').append(row);
@@ -181,7 +191,7 @@ $(document).ready(function () {
                 const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
                 const imagePairDiv = $('<div class="image-pair"></div>');
                 const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
-                const downloadButton = $(`<a href="${imagePair.processed_url}" class="image-button" download="generate-image.png">Download Image</a>`)
+                const downloadButton = $(`<button onclick="downloadFile(${imagePair.processed_url})" >Download Image</a>`)
                 imagePairDiv.append(processedImage).append(downloadButton);
                 row.append(caption).append(imagePairDiv);
                 $('#image-pairs').append(row);
