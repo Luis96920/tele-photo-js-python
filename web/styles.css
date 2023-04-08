@@ -90,182 +90,201 @@ button:hover {
   
   #fileList img {
     margin: 5px;
+    display: inline;
+    max-width: 27%;
+    height: auto;
+  }
+  
+  #fileListSingle img {
+    margin: 5px;
+    display: inline;
+    max-width: 90%;
+    height: auto;
   }
 
-  @import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@900&family=Work+Sans:wght@300;400&display=swap');
+  .image-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
 
-  body {
-  --base:blue;
-  --accent: yellow;
-  }
-  
-  html {
-  margin:0;
-  padding:0;
-  background: black;
-  }
-  
-  
-  /*~~~~~~~~~~~~~~~~~~~~*/
-  
-  #loading-icon {display:flex;align-items:center;
-  align-content:center;}
-  
-  .loader {margin-left:calc(50% - 30px);margin-top:6em;border: 12px solid var(--base);border-top: 12px solid var(--accent);}
-  
-  
-  
-  #download-all {margin-bottom:15px;}
-  
-  body {
-  border:14px solid var(--base);
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  background-color:var(--accent);
-  font-family:work sans, sans-serif;
-  
-  background-image: 
-  radial-gradient(var(--base) 5.5px, transparent 0);
-  
-  background-size: 9px 9px;
-  color:var(--accent);
-  margin:auto;
-  padding-bottom:20px;
-  
-  box-shadow: inset 0px 10px 550px 50px var(--base);
-  }
-  
-  
-  label {background:var(--base);padding:10px}
-  label:nth-child(2) {margin:10px 30px;}
-  
-  .caption {
-  background:var(--base);
-  }
-  
-  .image-row {background:var(--base);padding-bottom:15px;border:1px solid var(--accent);padding-top:15px;margin-bottom:15px;}
-  
-  .subject-container {background:var(--base)}
-  
-  
-  
-  #image-input {
-  margin-top:15px !Important;
-  background:var(--base);
-  border:0px solid var(--accent);
-  overflow:hidden;max-width:300px;}
-  
-  #fileListSingle {max-width:400px;
-  margin-bottom:20px;}
-  
-  #fileList {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  align-content:center;
-  margin-bottom:20px;
-  }
-  
-  #fileList img {max-width:999em;height:6em;border:5px solid var(--accent);margin:0;margin-top:-5px;}
-  
-  
-  form {
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: left;
-  }
-  
-  
-  
-  
-  h3, button, input, label, form {font-size:19px;font-family:work sans;}
-  
-  
-  h2 {
-  display:inline;
-  font-size:20px;
-  color:var(--accent);
-  background:var(--base);
-  padding:10px;
-  max-width:800px;
-  }
-  
-  h3 {
-  font-size:15px;
-  font-weight:normal;
-  max-width:none;
-  background:var(--accent);
-  margin-bottom:20px;
-  padding:10px;
-  color:var(--base);
-  box-shadow:0px 5px 56px 12px var(--base);
-  }
-  
-  
-  button, h3 {box-shadow:0px 5px 26px 2px var(--base);
-  }
-  
-  
-  
-  .container {boorder:10px solid var(--base);
-  width:auto;max-width:90%;
-  }
-  
-  
-  
-  #top-section {
-  max-width:90%;
-  
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-  }
-  
-  
-  button {
-  font-weight:bold;
-  border:0.5px solid var(--accent);
-  background-color: var(--base);
-  color:var(--accent);
-  font-family:work sans;
-  font-weight:500;
-  }
-  
-  button:hover {background:var(--accent);color:var(--base)}
-  
-  
-  #upload-form input::file-selector-button {
-  margin:0px 15px 0px 0px;
-  
-  
-  
-  color: black;
-  background: white;
-  font-family:work sans;
-  font-size:0.8em;
-  padding: 0.2em 0.5em;
-  border: none;
-  border-right:1px solid black;
-  text-align:right;
-  }
-  
-  
-  
-  h1 {
-  letter-spacing:3px;
-  background:var(--base);
-  
-  
-  color:var(--accent);
-  padding:1px 2px;
-  margin:30px 0 0px 0;
-  font-family:albert sans;
-  text-transform: uppercase;
-  display: inline;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@900&family=Work+Sans:wght@300;400&display=swap');
+
+body {
+--base:blue;
+--accent: yellow;
+}
+
+html {
+margin:0;
+padding:0;
+background: black;
+}
+
+
+/*~~~~~~~~~~~~~~~~~~~~*/
+
+#loading-icon {display:flex;align-items:center;
+align-content:center;}
+
+.loader {margin-left:calc(50% - 30px);margin-top:6em;border: 12px solid var(--base);border-top: 12px solid var(--accent);}
+
+
+
+#download-all {margin-bottom:15px;}
+
+body {
+border:14px solid var(--base);
+display:flex;
+flex-direction: column;
+align-items: center;
+align-content: center;
+text-align: center;
+background-color:var(--accent);
+font-family:work sans, sans-serif;
+
+background-image: 
+radial-gradient(var(--base) 5.5px, transparent 0);
+
+background-size: 9px 9px;
+color:var(--accent);
+margin:auto;
+padding-bottom:20px;
+
+box-shadow: inset 0px 10px 550px 50px var(--base);
+}
+
+
+label {background:var(--base);padding:10px}
+label:nth-child(2) {margin:10px 30px;}
+
+.caption {
+background:var(--base);
+}
+
+.image-row {background:var(--base);padding-bottom:15px;border:1px solid var(--accent);padding-top:15px;margin-bottom:15px;}
+
+.subject-container {background:var(--base)}
+
+
+
+#image-input {
+margin-top:15px !Important;
+background:var(--base);
+border:0px solid var(--accent);
+overflow:hidden;max-width:300px;}
+
+#fileListSingle {max-width:400px;
+margin-bottom:20px;}
+
+#fileList {
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-content:center;
+margin-bottom:20px;
+}
+
+#fileList img {max-width:999em;height:6em;border:5px solid var(--accent);margin:0;margin-top:-5px;}
+
+
+form {
+display:flex;
+flex-direction: column;
+align-items: center;
+text-align: left;
+}
+
+
+
+
+h3, button, input, label, form {font-size:19px;font-family:work sans;}
+
+
+h2 {
+display:inline;
+font-size:20px;
+color:var(--accent);
+background:var(--base);
+padding:10px;
+max-width:800px;
+}
+
+h3 {
+font-size:15px;
+font-weight:normal;
+max-width:none;
+background:var(--accent);
+margin-bottom:20px;
+padding:10px;
+color:var(--base);
+box-shadow:0px 5px 56px 12px var(--base);
+}
+
+
+button, h3 {box-shadow:0px 5px 26px 2px var(--base);
+}
+
+
+
+.container {boorder:10px solid var(--base);
+width:auto;max-width:90%;
+}
+
+
+
+#top-section {
+max-width:90%;
+
+display:flex;
+flex-direction: column;
+align-items: center;
+align-content: center;
+text-align: center;
+}
+
+
+button {
+font-weight:bold;
+border:0.5px solid var(--accent);
+background-color: var(--base);
+color:var(--accent);
+font-family:work sans;
+font-weight:500;
+}
+
+button:hover {background:var(--accent);color:var(--base)}
+
+
+#upload-form input::file-selector-button {
+margin:0px 15px 0px 0px;
+
+
+
+color: black;
+background: white;
+font-family:work sans;
+font-size:0.8em;
+padding: 0.2em 0.5em;
+border: none;
+border-right:1px solid black;
+text-align:right;
+}
+
+
+
+h1 {
+letter-spacing:3px;
+background:var(--base);
+
+
+color:var(--accent);
+padding:1px 2px;
+margin:30px 0 0px 0;
+font-family:albert sans;
+text-transform: uppercase;
+display: inline;
+}
