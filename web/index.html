@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
+    <script>
+
+      function downloadFile(fileUrl) {
+          const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = fileUrl.split('/').pop();
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+      </script>
     <style>
         /* Add this CSS rule for the loading icon container */
         #loading-icon {
@@ -54,24 +66,22 @@
     <!-- Inside the <body> tag -->
         <div id="top-section">
         <h1> Welcome to TelePhoto </h1>
-        <h3> An image-based game of Telephone starting with YOU and passing through two generative AI models. </h3>
-        <h3> The first AI model generates a caption for your image. 
+        <h2> Now introducing multi-image TelePhoto. The game starts with up to 5 images. This is a tougher game for the AIs, so you can give them hints!</h2>
+        <h3> An image-based game of Telephone starting with YOU and passing through several generative AI models. </h3>
+        <h3> The first AI model generates a caption for your image(s). 
             <br> The second AI model generates an image for that caption. <br>
             How far will this game of TelePhoto take your image?
          </h3>
-        <p>
-            Files uploaded to this website are stored for a maximum of 1 day and are automatically deleted after that time. <br> 
-            If you require immediate deletion of any files please contact: ben at reiform.com.
-          </p>
         </div>
-          <label for="terms">
-            <input type="checkbox" id="terms" name="terms" required>
-            I agree to the one day file hold policy. (You must agree to ride the ride)
+          
+          <label for="version">
+            <input type="checkbox" id="version" name="version">
+            Check this box to play multi-round telephoto. (Original version, Single image input)
           </label>
           
     <div class="container">
         
-        <div class="dropdown-container">
+        <div class="dropdown-container" id="dropdown-container" style="display: none;">
             <label for="number-dropdown"> <b>Rounds of TelePhoto:</b></label>
             <select id="number-dropdown" name="number-dropdown">
               <option value="1">1</option>
@@ -81,14 +91,16 @@
               <option value="5">5</option>
             </select>
           </div>
-          <div class="dropdown-container">
-          <label for="number-dropdown"> <b>Image subject label(s):</b></label>
-          <input id="class-keyword" type="text" name="class-keyword" placeholder="unknown subject"  maxlength="256">
+          <div class="subject-container" id="subject-container">
+          <label for="class-keyword"> <b>Common Subject (hint):</b></label>
+          <input id="class-keyword" type="text" name="class-keyword" placeholder=""  maxlength="256">
           </div>
         <form id="upload-form">
-            <input type="file" id="image-input" accept="image/*" required multiple>
+            <input type="file" id="image-input" accept="image/*" name="images[]" required multiple>
             <button id="uploadBtn" type="submit">Play Telephoto!</button>
         </form>
+        <button id="download-all">Download Generated Image(s)</button>
+        <div id="fileListSingle"></div>
         <div id="fileList"></div>
         
         <div class="images" id="image-pairs"></div>

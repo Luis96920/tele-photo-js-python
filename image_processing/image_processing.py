@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
     path = "/home/ben/Data/classic_benchmarks/ImageNetSample_3/SeaTurtle"
     paths = list_files(path)
-
+    # paths = [path + "/n01664065_208.JPEG"]
     caption_list = predict_images_from_paths(paths)
 
     new_caption = make_caption(caption_list, path.split("/")[-1])

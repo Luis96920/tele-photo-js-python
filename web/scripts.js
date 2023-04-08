@@ -1,28 +1,36 @@
 // scripts.js
 $(document).ready(function () {
     const uploadForm = $("#upload-form");
+    const countdownTimer = $("#countdown-timer");
+    
     const imageInput = $("#image-input");
-    const countdownTimer = $('#countdown-timer');
-
-    const termsCheckbox = $('#terms');
-    const uploadBtn = $('#uploadBtn');
-
-    // Initially disable the button
-    uploadBtn.prop('disabled', true);
-    uploadBtn.addClass('disabled-btn');
+    const versionCheckbox = document.getElementById('version');
 
     const fileList = document.getElementById('fileList');
+    const fileListSingle = document.getElementById('fileListSingle');
     const fileInput = document.getElementById('image-input');
+
+    const dropdownContainer = document.getElementById('dropdown-container');
+    const subjectContainer = document.getElementById('subject-container');
 
     fileInput.addEventListener('change', (event) => {
         const files = event.target.files;
-  
+        
         // limit the number of files selected to 5
         if (files.length > 5) {
           alert("Please select no more than 5 files.");
+          fileInput.value = '';
           return;
         }
-      
+        
+        $("#fileList").empty();
+        $("#fileListSingle").empty();
+        
+        let fileContainer = fileList
+        if (versionCheckbox.checked) {
+            fileContainer = fileListSingle
+        }
+
         // loop through the selected files and create a FileReader for each
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
@@ -32,25 +40,32 @@ $(document).ready(function () {
           reader.onload = (event) => {
             const imageElement = document.createElement("img");
             imageElement.src = event.target.result;
-            fileList.appendChild(imageElement);
+            fileContainer.appendChild(imageElement);
           };
       
           // read the file as a data URL
           reader.readAsDataURL(file);
         }
+
     });
 
-    termsCheckbox.on('change', function () {
-      // Enable or disable the button based on the checkbox state
-      uploadBtn.prop('disabled', !termsCheckbox.prop('checked'));
-  
-      // Add or remove the disabled-btn class based on the checkbox state
-      if (termsCheckbox.prop('checked')) {
-        uploadBtn.removeClass('disabled-btn');
-      } else {
-        uploadBtn.addClass('disabled-btn');
-      }
-    });
+    versionCheckbox.addEventListener("change", (event) => {
+        // fileInput.files = []
+        fileInput.value = '';
+        if (event.target.checked) {
+            fileInput.removeAttribute("multiple");
+            fileInput.removeAttribute("name");
+            dropdownContainer.style.display = '';
+            subjectContainer.style.display = 'none';
+            $("#fileList").empty();
+        } else {
+            fileInput.setAttribute("multiple", "");
+            fileInput.setAttribute("name", "images[]");
+            dropdownContainer.style.display = 'none';
+            subjectContainer.style.display = '';
+            $("#fileListSingle").empty();
+        }
+      });
 
     // Find the loading-icon element
     const loadingIcon = document.getElementById("loading-icon");
@@ -87,18 +102,48 @@ $(document).ready(function () {
     function stopTimer(timerInterval) {
     clearInterval(timerInterval);
     }
+
+    const downloadAllButton = document.getElementById('download-all');
+
+    downloadAllButton.addEventListener('click', () => {
+        fileURLs.forEach((fileUrl, i) => {
+            const link = document.createElement('a');
+            link.setAttribute("download", "")
+            link.href = fileUrl;
+            link.download = fileUrl.split('/').pop();
+            link.style.display = 'none';document.body.appendChild(link);
+            setTimeout(() => {
+              link.click();
+              document.body.removeChild(link);
+            }, i * 500);
+        });
+    });
     
+    let fileURLs = []
 
     uploadForm.on("submit", function (event) {
         showLoadingIcon();
         const numberDropdown = document.getElementById("number-dropdown");
-        const numberValue = numberDropdown.value;
-        updateCountdown(12*parseInt(numberValue));
-        timer = startTimer(12 * parseInt(numberValue));
-        event.preventDefault();
+        let numberValue = parseInt(numberDropdown.value);
         const formData = new FormData();
-        formData.append("image", imageInput[0].files[0]);
-        formData.append("number", numberValue);
+        if (!versionCheckbox.checked) {
+            numberValue = 1;
+            updateCountdown(fileInput.files.length * 11);
+            timer = startTimer(fileInput.files.length * 11);
+            const labelField = document.getElementById("class-keyword");
+            for (let i = 0; i < Math.min(fileInput.files.length, 5); i++) {
+                formData.append('images[]', fileInput.files[i]);
+            }
+            formData.append("description", labelField.value);
+        } else {
+            updateCountdown(12*numberValue);
+            timer = startTimer(12 * numberValue);
+            formData.append("image", imageInput[0].files[0]);
+        }
+
+        event.preventDefault();
+
+        fileURLs = []
 
         axios.post("https://telephoto.reiform.com/api/upload_and_process", formData, {
             headers: {
@@ -114,14 +159,16 @@ $(document).ready(function () {
             const row = $('<div class="image-row"></div>');
             const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
             const imagePairDiv = $('<div class="image-pair"></div>');
-            const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
             const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
-            imagePairDiv.append(originalImage).append(processedImage);
+            const downloadButton = $(`<button onclick="downloadFile('${imagePair.processed_url}')" >Download Image</a>`)
+            imagePairDiv.append(processedImage).append(downloadButton);
             row.append(caption).append(imagePairDiv);
             $('#image-pairs').append(row);
 
+            
             let processed_url = imagePair.processed_url;
-            for (let i = 1; i < parseInt(numberValue); i++) {
+            fileURLs = [processed_url]
+            for (let i = 1; i < numberValue; i++) {
                 let data = {
                     "url" : processed_url
                 }
@@ -138,13 +185,14 @@ $(document).ready(function () {
                 const row = $('<div class="image-row"></div>');
                 const caption = $('<div class="caption"></div>').text(`=> ${imagePair.caption} =>`);
                 const imagePairDiv = $('<div class="image-pair"></div>');
-                const originalImage = $('<img class="original-image">').attr('src', imagePair.original_url);
                 const processedImage = $('<img class="processed-image">').attr('src', imagePair.processed_url);
-                imagePairDiv.append(originalImage).append(processedImage);
+                const downloadButton = $(`<button onclick="downloadFile('${imagePair.processed_url}')" >Download Image</a>`)
+                imagePairDiv.append(processedImage).append(downloadButton);
                 row.append(caption).append(imagePairDiv);
                 $('#image-pairs').append(row);
                 
                 processed_url = imagePair.processed_url;
+                fileURLs.push(processed_url)
                 } catch(error) {
                     console.error(error);
                     hideLoadingIcon();
